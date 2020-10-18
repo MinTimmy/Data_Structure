@@ -1,0 +1,6 @@
+{
+    //"python.linting.enabled": true
+    //"python.linting.<linter>Enabled": true,
+    "python.linting.enabled": false
+    //"python.linting.enabled": true
+}
