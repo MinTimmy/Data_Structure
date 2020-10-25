@@ -1,17 +1,17 @@
 from random import *
 
-def seletion_sort(nums):
-   for i in range(len(nums)):
+def Selection_sort(numbers):
+   for i in range(len(numbers)):
        min = i
-       for j in range(i + 1, len(nums)):
-           if nums[j] < nums[min]:
+       for j in range(i + 1, len(numbers)):
+           if numbers[j] < numbers[min]:
                min = j
        if min != i:
-           nums[i] , nums[min] = nums[min] , nums[i]
+           numbers[i] , numbers[min] = numbers[min] , numbers[i]
 num = []
 for i in range(5):
     n = randint(1,100)
     num.insert(1,n)
-seletion_sort(num)
+Selection_sort(num)
 
 print(num)

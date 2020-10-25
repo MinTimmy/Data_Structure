@@ -1,6 +1,5 @@
 from random import *
 def bubble_sort(num):
-
     swapped = True
     while swapped:
         swapped = False

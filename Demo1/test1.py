@@ -17,6 +17,7 @@ class Main(QMainWindow):
 
         self.show()
 
+        self.lb = QLabel(self)
         self.cards_amount = 0
         self.cards = []
         self.cards_number = []
@@ -27,21 +28,20 @@ class Main(QMainWindow):
         lb = QLabel(self, text = "TextBox: ")
         lb.move(180,60)
         textBox = QLineEdit(self)
-        textBox.resize(500,30)
+        textBox.resize(100,30)
         textBox.move(250,60)
         return textBox
 
     def CreateButton(self):
         button = QPushButton(self, text = "OK")
         button.resize(30,30)
-        button.move(800, 60)
+        button.move(400, 60)
         button.clicked.connect(lambda: self.setAmount())
         button.clicked.connect(lambda: print("OK"))
         return button
 
     
     def setAmount(self):
-        #init data
         text = self.textBox.text()
         self.cards_amount = 0
         self.cards = []
@@ -49,8 +49,6 @@ class Main(QMainWindow):
         self.answer_string = ""
         self.count = 0
         #text = "c3,d5,hA,c5,sK,hJ,s10"
-
-        #convert string to number of list 
         i = 0
         tmp = ""
         while i < len(text):
@@ -128,12 +126,11 @@ class Main(QMainWindow):
         for i in range(1,len(Str)):
             string =  string  + ',' + Str[i]
 
-        lb = QLabel(self, text = string)
-        lb.move(50,100 + self.count * 20)
-        lb.resize(200,100)
+        self.lb.setText(string)
+        self.lb.move(50,100 + self.count * 20)
+        self.lb.resize(200,100)
 
-        lb.show()
-        self.button.clicked.connect(lambda: lb.clear()) #clear the label
+        self.lb.show()
         self.count += 1
         
 
@@ -147,3 +144,14 @@ def main():
 if __name__ == "__main__":
     main()
 
+
+'''if __name__ == "__main__":
+    app = QApplication(sys.argv)
+
+    ex = Main()
+
+    ex.resize(500, 500)
+    ex.show()
+    sys.exit(app.exec_())
+
+'''

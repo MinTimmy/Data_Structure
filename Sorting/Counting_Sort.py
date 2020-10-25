@@ -7,7 +7,7 @@ def countSort(arr):
 	# The output character array that will have sorted arr
 	output = [0 for i in range(len(arr))]
 
-	# Create a count array to store count of inidividul
+	# Create a count array to store count of individual
 	# characters and initialize count array as 0
 	count = [0 for i in range(256)]
 
@@ -40,4 +40,3 @@ arr = "geeksforgeeks"
 ans = countSort(arr)
 print("Sorted character array is % s" %("".join(ans)))
 
-# This code is contributed by Nikhil Kumar Singh

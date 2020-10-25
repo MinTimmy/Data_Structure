@@ -88,7 +88,6 @@ class Main(QMainWindow):
             tmp = switcher_flower.get(self.cards[i][0], 0)*13 + switcher_number.get(self.cards[i][1], 10)
             self.cards_number.append(tmp)   
         
-        #print(self.cards_number)
         self.start_sorting()
     
     def start_sorting(self):
@@ -99,13 +98,10 @@ class Main(QMainWindow):
         # Traverse through 1 to len(arr) 
         arr = self.cards_number
         arr_card = self.cards
-        #time.sleep(5)
         self.showAnswer(arr_card)
-        #time.sleep(5)
         for i in range(1, len(arr)): 
             key = arr[i]
             key_card =  arr_card[i]
-            #print(i)
             # Move elements of arr[0..i-1], that are 
             # greater than key, to one position ahead 
             # of their current position 

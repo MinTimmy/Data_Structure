@@ -48,7 +48,7 @@ class Main(QMainWindow):
         self.cards_number = []
         self.answer_string = ""
         self.count = 0
-        #text = "c3,d5,hA,c5,sK,hJ,s10"
+        text = "dQ,h8,h6,c4,c5,h2,d7"
 
         #convert string to number of list 
         i = 0
@@ -88,39 +88,25 @@ class Main(QMainWindow):
             tmp = switcher_flower.get(self.cards[i][0], 0)*13 + switcher_number.get(self.cards[i][1], 10)
             self.cards_number.append(tmp)   
         
-        #print(self.cards_number)
         self.start_sorting()
     
     def start_sorting(self):
-        self.insertion_sort()
-
-    def insertion_sort(self):
+        #self.insertion_sort()
+        self.selection_sort()
         
-        # Traverse through 1 to len(arr) 
-        arr = self.cards_number
-        arr_card = self.cards
-        #time.sleep(5)
-        self.showAnswer(arr_card)
-        #time.sleep(5)
-        for i in range(1, len(arr)): 
-            key = arr[i]
-            key_card =  arr_card[i]
-            #print(i)
-            # Move elements of arr[0..i-1], that are 
-            # greater than key, to one position ahead 
-            # of their current position 
-            j = i-1
-            while j >= 0 and key > arr[j] : 
-                arr[j + 1] = arr[j]
-                arr_card[j + 1] = arr_card[j]
-                self.showAnswer(arr_card)
-                j -= 1
-            arr[j + 1] = key
-            arr_card[j + 1] = key_card
-
-        self.showAnswer(arr_card)
-        print(self.answer_string)
-        
+    def selection_sort(self):
+        numbers = self.cards_number
+        numbers_str = self.cards
+        self.showAnswer(numbers_str)
+        for i in range(len(numbers)):
+            max = i
+            for j in range(i + 1, len(numbers)):
+                if numbers[j] > numbers[max]:
+                    max = j
+            if max != i:
+                numbers[i] , numbers[max] = numbers[max] , numbers[i]
+                numbers_str[i] , numbers_str[max] = numbers_str[max] , numbers_str[i]
+                self.showAnswer(numbers_str)    
 
     def showAnswer(self, Str):
         string = str(self.count) + ': '
