@@ -20,6 +20,7 @@ class Widget(QWidget):
           __init__ 用來初始化 class 內的變數及物件，與 C++ 的 Constructor 等價，在這裡為初始化父物件，也就是 QWidget。
           呼叫 super() 與呼叫父物件等價，因此這裡也可以寫成 QWidget.__init__()。
         '''
+        self.count = 0
         super().__init__()
 
     def paintEvent(self, event):
@@ -29,6 +30,8 @@ class Widget(QWidget):
           self: 與 C++ 中的 this 等價，用來創建專屬物件本身（class）的變數以及函式
           event: 畫畫事件，裡面包括視窗以及畫畫的一些屬性和設定，不需要特別傳遞
         '''
+        print(self.count)
+        self.count += 1
         painter = QPainter(self) # 呼叫畫筆
         painter.setPen(Qt.red) # 把畫筆顏色變紅色
         
