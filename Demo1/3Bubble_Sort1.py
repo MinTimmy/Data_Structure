@@ -92,7 +92,6 @@ class Main(QMainWindow):
             self.x[self.count][i] = self.now_x - self.output_answer[self.count][i] *10
             self.y[self.count][i] = self.now_y - self.output_answer[self.count][i] *10
             self.radix[self.count][i] = self.output_answer[self.count][i] * 2 *10
-            #self.create_label()
             self.now_x += 200 
             print(self.x[self.count][i]," ",self.y[self.count][i]," ")
             QWidget.update(self)
@@ -100,28 +99,31 @@ class Main(QMainWindow):
         self.now_y += 200
         self.now_x = 200
     #從這裡開始
-    """    
+        
     def create_label(self):
         x = 200
         y = 200
         for i in range(self.count):
-            for j in range(len(self.numbers))
-                lb = QLabel(self, text = char(self.output_answer[i][j]))
+            for j in range(len(self.numbers)):
+                lb = QLabel(self, text = str(i) + ' ' + str(j) + ' ' + str(self.output_answer[i][j]))
                 lb.move(x,y)
+                lb.show()
                 x += 200
-            y +=200
+            y += 200
+            x = 200
 
         #lb.resize(200,100)
 
-        lb.show()
-        self.button.clicked.connect(lambda: lb.clear()) #clear the label
-    """
+        
+        self.button.clicked.connect(lambda: lb.hide()) #clear the label
+    
     def paintEvent(self, event):
         painter = QPainter(self) # 呼叫畫筆
         painter.setBrush(QBrush(Qt.blue, Qt.SolidPattern))
         painter.setPen(QPen(Qt.blue, 3, Qt.SolidLine))
         #painter.drawLine(0,200,1000,200)
         if self.check:
+            self.create_label()
             for i in range(self.count):
                 for j in range(len(self.numbers)):
                     painter.drawEllipse(self.x[i][j], self.y[i][j], self.radix[i][j], self.radix[i][j])

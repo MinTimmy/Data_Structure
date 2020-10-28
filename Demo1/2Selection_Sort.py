@@ -48,7 +48,7 @@ class Main(QMainWindow):
         self.cards_number = []
         self.answer_string = ""
         self.count = 0
-        text = "dQ,h8,h6,c4,c5,h2,d7"
+        #text = "dQ,h8,h6,c4,c5,h2,d7"
 
         #convert string to number of list 
         i = 0
@@ -113,11 +113,9 @@ class Main(QMainWindow):
         string =  string + Str[0]
         for i in range(1,len(Str)):
             string =  string  + ',' + Str[i]
-
         lb = QLabel(self, text = string)
         lb.move(50,100 + self.count * 20)
         lb.resize(200,100)
-
         lb.show()
         self.button.clicked.connect(lambda: lb.clear()) #clear the label
         self.count += 1
