@@ -115,7 +115,7 @@ class Main(QMainWindow):
         #lb.resize(200,100)
 
         
-        self.button.clicked.connect(lambda: lb.hide()) #clear the label
+        self.button.clicked.connect(lambda: lb.clear()) #clear the label
     
     def paintEvent(self, event):
         painter = QPainter(self) # 呼叫畫筆

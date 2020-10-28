@@ -17,9 +17,9 @@ class Main(QMainWindow):
 
         self.show()
         self.setStyleSheet('QFrame{background-color:rgb(0,0,255)}')
-        self.numbers = []
-        self.output_answer = [[0 for i in range(10)] for j in range(100)]
-        self.count = 0
+        self.numbers = [] # 使用者輸入的數字
+        self.output_answer = [[0 for i in range(10)] for j in range(100)] # 紀錄要輸出的數字
+        self.count = 0 # 紀錄要交換幾次
         
     def CreateTextbox(self):
         #lb = QLabel(self, text = "TextBox: ")
@@ -43,7 +43,7 @@ class Main(QMainWindow):
         #text = "5,2,7,1,7,3"
         self.check = True
 
-        #處理字串
+        #處理字串 從 "5,2,7,1,7,3" 變成 self.numbers = [5,2,7,1,7,3]
         i = 0
         tmp = ""
         c = []
@@ -91,6 +91,7 @@ class Main(QMainWindow):
         self.numbers = []
         self.output_answer = [[0 for i in range(10)] for j in range(100)]
         self.count = 0
+        
     def label(self, t, x, y):
         temp = t * 20
         lb = QLabel(self, text = str(t))
