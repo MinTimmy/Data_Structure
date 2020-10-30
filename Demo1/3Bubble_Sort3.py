@@ -12,8 +12,10 @@ class Main(QMainWindow):
         self.InitUi()
 
     def InitUi(self):
+
         self.textBox = self.CreateTextbox()
         self.button = self.CreateButton()
+        self.vbox = QVBoxLayout()
 
         self.show()
         self.setStyleSheet('QFrame{background-color:rgb(0,0,255)}')
@@ -36,7 +38,17 @@ class Main(QMainWindow):
         button.clicked.connect(lambda: self.setAmount())
         button.clicked.connect(lambda: print("OK"))
         return button
+    def createScroll(self):
+        self.widget = QWidget()
+        self.scroll = QScrollArea()
+        self.scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        self.scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.scroll.setWidgetResizable(True)
+        self.scroll.setWidget(self.groupBox)
+        self.setCentralWidget(self.scroll)
 
+        self.layout = QVBoxLayout(self)
+        self.layout.addWidget(scroll)
 
     def setAmount(self):
         text = self.textBox.text()
@@ -78,7 +90,32 @@ class Main(QMainWindow):
         for i in range(len(self.numbers)):
             self.output_answer[self.count][i] = self.numbers[i]    
         self.create_label()
-        
+        #self.createVbox()
+    """
+    def createVbox(self):
+        x = 200
+        y = 200
+        for i in range(self.count):
+            for j in range(len(self.numbers)):
+                object = QLabel(self,text = str(self.output_answer[i][j]))
+                temp = self.numbers[j] * 20
+                object.setAlignment(Qt.AlignCenter)
+                object.move(x, y)
+                object.resize(temp, temp) 
+                object.move(x-temp/2,y-temp/2)
+                object.setStyleSheet("border: 3px solid blue; border-radius:"+str(temp/2)+"px;") 
+                self.button.clicked.connect(lambda: lb.hide()) #clear the label
+                self.vbox.addWidget(object)
+
+                x += 200
+            y += 200
+            x = 200
+        #self.widget.setLayout(self.vbox)
+        self.update()
+        self.numbers = []
+        self.output_answer = [[0 for i in range(10)] for j in range(100)]
+        self.count = 0
+    """
     def create_label(self):
         x = 200
         y = 200
@@ -91,15 +128,26 @@ class Main(QMainWindow):
         self.numbers = []
         self.output_answer = [[0 for i in range(10)] for j in range(100)]
         self.count = 0
-        
+
+        self.createScroll() # Scroll Area which contains the widgets, set as the centralWidget
+
+       
     def label(self, t, x, y):
+        self.formLayout = QFormLayout()
+        self.groupBox = QGroupBox()
         temp = t * 20
         lb = QLabel(self, text = str(t))
         lb.setAlignment(Qt.AlignCenter)
         lb.resize(temp, temp) 
         lb.move(x-temp/2,y-temp/2)
         lb.setStyleSheet("border: 3px solid blue; border-radius:"+str(temp/2)+"px;") 
-        lb.show()
+        self.formLayout.addRow(lb)
+        self.groupBox.setLayout(formLayout)
+        #self.widget.setLayout(lb)
+        #self.resize(100,100)
+        #self.move(180,100)
+        #self.update()
+        #lb.show()
         self.button.clicked.connect(lambda: lb.hide()) #clear the label
     
 def main():

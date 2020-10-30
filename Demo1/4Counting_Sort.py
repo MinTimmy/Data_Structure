@@ -12,6 +12,7 @@ class Main(QMainWindow):
         self.InitUi()
 
     def InitUi(self):
+        self.widget = QWidget()
         self.createScroll() # Scroll Area which contains the widgets, set as the centralWidget
         
         self.textBox = self.CreateTextbox()
@@ -24,28 +25,31 @@ class Main(QMainWindow):
         self.numbers = []
     def CreateTextbox(self):
         lb = QLabel(self, text = "TextBox: ")
-        lb.move(180,60)
+        lb.move(930,60)
         textBox = QLineEdit(self)
         textBox.resize(500,30)
-        textBox.move(250,60)
+        textBox.move(1000,60)
         return textBox
 
     def CreateButton(self):
         button = QPushButton(self, text = "OK")
         button.resize(30,30)
-        button.move(800, 60)
+        button.move(1500, 60)
         button.clicked.connect(lambda: self.setAmount())
         button.clicked.connect(lambda: print("OK"))
         return button
+    
     def createScroll(self):
-        self.widget = QWidget()
+        
         self.scroll = QScrollArea()
         self.scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
         self.scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.scroll.setWidgetResizable(True)
         self.scroll.setWidget(self.widget)
         self.setCentralWidget(self.scroll)
+        
 
+    
     def createVbox(self):
         color = ["#5bc0de","#5cb85c","#0275d8","#f0ad4e","#d9534f","red"]
         count = 1
@@ -54,11 +58,13 @@ class Main(QMainWindow):
             if self.output_numbers[i] >= (count+1) * 100:
                 count += 1
             object.setStyleSheet("color : "+color[count-1])
+            object.move(100,100+i)
             self.vbox.addWidget(object)
 
         self.widget.setLayout(self.vbox)
-        self.widget.move(180,100)
-        self.update()
+        #self.resize(100,100)
+        self.move(180,100)
+        #self.update()
     """
     def showAnswer(self):
         count = 0
@@ -90,7 +96,7 @@ class Main(QMainWindow):
 
 
     def setAmount(self):
-        fp = open("access.log", "r")
+        fp = open("access_test.log", "r")
         self.lines = fp.readlines()
         count = 0
         tmp = []
