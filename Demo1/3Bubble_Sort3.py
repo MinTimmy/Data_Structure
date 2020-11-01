@@ -142,7 +142,7 @@ class Main(QMainWindow):
         lb.move(x-temp/2,y-temp/2)
         lb.setStyleSheet("border: 3px solid blue; border-radius:"+str(temp/2)+"px;") 
         self.formLayout.addRow(lb)
-        self.groupBox.setLayout(formLayout)
+        self.groupBox.setLayout(self.formLayout)
         #self.widget.setLayout(lb)
         #self.resize(100,100)
         #self.move(180,100)

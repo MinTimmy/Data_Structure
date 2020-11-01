@@ -28,7 +28,7 @@ class Example(QWidget):
         hbox.addWidget(lb2)
         #hbox.addWidget(lb)
 
-        #self.setLayout(hbox)
+        self.setLayout(hbox)
 
         self.setGeometry(300, 300, 350, 250)
         self.setWindowTitle('QLabel')

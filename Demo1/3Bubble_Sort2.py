@@ -99,7 +99,7 @@ class Main(QMainWindow):
         lb.resize(temp, temp) 
         lb.move(x-temp/2,y-temp/2)
         lb.setStyleSheet("border: 3px solid blue; border-radius:"+str(temp/2)+"px;") 
-        lb.show()
+        lb.show() 
         self.button.clicked.connect(lambda: lb.hide()) #clear the label
     
 def main():

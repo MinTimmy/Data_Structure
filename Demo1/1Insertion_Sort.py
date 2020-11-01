@@ -48,7 +48,8 @@ class Main(QMainWindow):
         self.cards_number = []
         self.answer_string = ""
         self.count = 0
-        #text = "c3,d5,hA,c5,sK,hJ,s10"
+        if text == "":
+            text = "c3,d5,hA,c5,sK,hJ,s10"
 
         #convert string to number of list 
         i = 0
