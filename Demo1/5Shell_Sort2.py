@@ -6,35 +6,21 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-
-class Main(QMainWindow):
-
-    def __init__(self, parent = None):
-        QMainWindow.__init__(self, parent)
-        self.InitUi()
-
-    def InitUi(self):
+class AnotherWindow(QMainWindow):
+    """
+    This "window" is a QWidget. If it has no parent, it 
+    will appear as a free-floating window as we want.
+    """
+    def __init__(self, data):
+        super().__init__()
+        self.resize(2000,2000)
         self.widget = QWidget()
         self.createScroll() # Scroll Area which contains the widgets, set as the centralWidget
-        
-        self.button = self.CreateButton()
-        self.vbox = QVBoxLayout()
-
-
         self.show()
-
-        self.numbers = []
-        self.data_string = []
-    
-
-    def CreateButton(self):
-        button = QPushButton(self, text = "OK")
-        button.resize(30,30)
-        button.move(1500, 60)
-        button.clicked.connect(lambda: self.setAmount())
-        button.clicked.connect(lambda: print("OK"))
-        return button
-    
+        self.data_string = data
+        self.vbox = QVBoxLayout()
+        self.createVbox()
+        
     def createScroll(self):
         self.scroll = QScrollArea()
         self.scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
@@ -68,7 +54,25 @@ class Main(QMainWindow):
 
         self.widget.setLayout(self.vbox)
         self.move(180,100)
-   
+
+
+class Main(QMainWindow):
+    def __init__(self, parent = None):
+        QMainWindow.__init__(self, parent)
+        self.InitUi()
+
+    def InitUi(self):
+        self.button = self.CreateButton()
+        self.w = None  # No external window yet.
+        self.data_string = []
+    
+    def CreateButton(self):
+        button = QPushButton(self, text = "OK")
+        button.resize(30,30)
+        button.clicked.connect(lambda: self.setAmount())
+        button.clicked.connect(lambda: print("OK"))
+        return button
+    
     def shell_sort(self):
         n = len(self.data_string)
         # Rearrange elements at each n/2, n/4, n/8, ... intervals
@@ -84,25 +88,21 @@ class Main(QMainWindow):
             interval //= 2
 
     def setAmount(self):
-        self.numbers = []
         self.data_string = []
         #把 csv 檔的資料存成 list(data_string,data_number)
-        with open('500_constituents_financial_test.csv') as csv_file:
+        with open('500_constituents_financial.csv') as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=',')
             check = False #第一列不存取
             for row in csv_reader:
                 if check:
                     self.data_string.append(row)
                 check = True
-
-        
         self.shell_sort()
-        self.createVbox()
+        self.w = AnotherWindow(self.data_string)
         self.output_file()    
 
     def output_file(self):
         f = open("demofile2.txt", "w")
-
         for i in self.data_string:
             for j in i:
                 f.write(j+'\n')
@@ -110,11 +110,9 @@ class Main(QMainWindow):
 def main():
     app = QApplication(sys.argv)
     main_window = Main()
-    main_window.resize(10000,10000)
     main_window.show()
     app.exec_()
-
-    
+   
 if __name__ == "__main__":
     main()
 

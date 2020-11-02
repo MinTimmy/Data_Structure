@@ -40,7 +40,8 @@ class Main(QMainWindow):
 
     def setAmount(self):
         text = self.textBox.text()
-        text = "5,2,7,1,7,3"
+        if text == "":
+            text = "5,2,7,1,7,3,10,10,8,4"
         self.check = True
 
         #處理字串 從 "5,2,7,1,7,3" 變成 self.numbers = [5,2,7,1,7,3]
@@ -54,9 +55,7 @@ class Main(QMainWindow):
             if text[i] != ",":
                 tmp = tmp + text[i]
             i += 1
-            print(tmp)
         c.append(int(tmp))
-        #print(c)
         self.numbers = c
         self.bubble_sort()
         
@@ -75,25 +74,26 @@ class Main(QMainWindow):
                         self.output_answer[self.count][i] = self.numbers[i]
                     swapped = True
         self.count += 1
+        print(self.count)
         for i in range(len(self.numbers)):
             self.output_answer[self.count][i] = self.numbers[i]    
         self.create_label()
         
     def create_label(self):
-        x = 200
-        y = 200
+        x = 100
+        y = 50
         for i in range(self.count):
             for j in range(len(self.numbers)):
                 self.label(self.output_answer[i][j], x, y)
-                x += 200
-            y += 200
-            x = 200
+                x += 100
+            y += 100
+            x = 100
         self.numbers = []
         self.output_answer = [[0 for i in range(10)] for j in range(100)]
         self.count = 0
         
     def label(self, t, x, y):
-        temp = t * 20
+        temp = t * 10
         lb = QLabel(self, text = str(t))
         lb.setAlignment(Qt.AlignCenter)
         lb.resize(temp, temp) 

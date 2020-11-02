@@ -6,7 +6,6 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
 class Main(QMainWindow):
-
     def __init__(self, parent = None):
         QMainWindow.__init__(self, parent)
         self.InitUi()
@@ -14,9 +13,7 @@ class Main(QMainWindow):
     def InitUi(self):
         self.textBox = self.CreateTextbox()
         self.button = self.CreateButton()
-
         self.show()
-
         self.cards_amount = 0
         self.cards = []
         self.cards_number = []
@@ -39,7 +36,6 @@ class Main(QMainWindow):
         button.clicked.connect(lambda: print("OK"))
         return button
 
-    
     def setAmount(self):
         #init data
         text = self.textBox.text()
@@ -110,7 +106,7 @@ class Main(QMainWindow):
                 self.showAnswer(numbers_str)    
 
     def showAnswer(self, Str):
-        string = str(self.count) + ': '
+        string = str(self.count + 1) + ': '
         string =  string + Str[0]
         for i in range(1,len(Str)):
             string =  string  + ',' + Str[i]
@@ -121,7 +117,6 @@ class Main(QMainWindow):
         self.button.clicked.connect(lambda: lb.clear()) #clear the label
         self.count += 1
         
-
 def main():
     app = QApplication(sys.argv)
     main_window = Main()
