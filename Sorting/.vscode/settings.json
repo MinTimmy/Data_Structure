@@ -1,0 +1,8 @@
+{
+    "python.linting.enabled": false,
+    "files.associations": {
+        "iostream": "cpp",
+        "random": "cpp",
+        "cmath": "cpp"
+    }
+}

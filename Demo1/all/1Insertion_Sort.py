@@ -9,7 +9,7 @@ class Main(QMainWindow):
     def __init__(self, parent = None):
         QMainWindow.__init__(self, parent)
         self.InitUi()
-
+        
     def InitUi(self):
         self.textBox = self.CreateTextbox()
         self.button = self.CreateButton()
@@ -33,7 +33,7 @@ class Main(QMainWindow):
         button.resize(30,30)
         button.move(800, 60)
         button.clicked.connect(lambda: self.setAmount())
-        button.clicked.connect(lambda: print("OK"))
+        #button.clicked.connect(lambda: print("OK"))
         return button
 
     def setAmount(self):

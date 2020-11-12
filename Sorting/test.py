@@ -1,5 +1,7 @@
-output = [0] * size
-    count = [0] * 10
-count = [0] * 10
+def ap(n):
+    n = "asd"
 
-print(count)
+num = "timmy"
+ap(num)
+
+print(num)

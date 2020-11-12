@@ -1,6 +1,7 @@
 import sys
 from PyQt5.QtWidgets import (QApplication, QMainWindow)
-from PyQt5.QtChart import *
+#from PyQt5.QtChart import *
+from PyQt5 import QtChart
 from PyQt5.Qt import Qt
 from PyQt5.QtGui import QPainter
 
