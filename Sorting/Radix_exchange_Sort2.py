@@ -21,7 +21,7 @@ def radix_exchange(left, right, bit):
             j += 1
         radix_exchange(left, j-1, bit+1)
         radix_exchange(j, right, bit+1)
-
+        
 radix_exchange(0, 5, 0)
 
 print(num)

@@ -63,14 +63,14 @@ void counting_sort(int num[])
 void insertion_sort(int num[])
 {
    for(int i = 1; i < SIZE; i++){
-       int j = i - 1;
-       int key = num[i];
-       while (j >=0 && num[j] < key)
-       {
-           num[j+1] = num[j];
-           j--;
-       }
-       num[j+1] = key;
+       int temp = num[i];
+        int  j = i -1;
+        while (j >= 0 && num[j] < temp)
+        {
+            num[j+1] = num[j];
+            j--;
+        }
+        num[j+1] = temp;      
    }
 }
 
@@ -78,27 +78,23 @@ int partition(int num[], int low, int high)
 {
     int pivot = num[high];
     int i = low - 1;
-
-    for(int j = low; j <= high-1; j++){
-        if(num[j] < pivot){
+    for(int j = low; j < SIZE - 1; j++){
+        if(num[j] > pivot){
             i++;
-            swap(num[i],num[j]);
+            swap(num[i], num[j]);
         }
     }
     swap(num[i+1], num[high]);
     return i+1;
-
 }
 //again
 void quick_sort(int num[], int low, int high)
 {
-
    if(low < high){
-        int pi = partition(num, low, high);
-        quick_sort(num, low, pi - 1);
-        quick_sort(num, pi+1, high);
+       int pi = partition(num, low, high);
+       quick_sort(num,low,pi - 1);
+       quick_sort(num, pi+1, high);
    }
-   
 }
 
 void selection_sort(int num[])
@@ -114,13 +110,14 @@ void selection_sort(int num[])
 //again
 void shell_sort(int num[])
 {
-   int interval = SIZE / 2;
-   while (interval > 0)
-   {
+    int interval = SIZE / 2;
+
+    while (interval > 0)
+    {
         for(int i = interval; i < SIZE; i++){
             int temp = num[i];
             int j = i;
-            while (j - interval >= 0 && num[j-interval] > temp)
+            while (j - interval >= 0 && num[j-interval] < temp)
             {
                 num[j] = num[j-interval];
                 j -= interval;
@@ -128,9 +125,8 @@ void shell_sort(int num[])
             num[j] = temp;
         }
         interval /= 2;
-   }
-   
-   
+    }
+    
 }
 
 void radix_counting_sort(int num[], int place)
@@ -175,8 +171,8 @@ int main()
 
     //bubble_sort(num);
     //counting_sort(num);
-    insertion_sort(num);
-    //quick_sort(num, 0, SIZE-1);
+    //insertion_sort(num);
+    quick_sort(num, 0, SIZE-1);
     //selection_sort(num);
     //shell_sort(num);
     //radix_sort(num);
