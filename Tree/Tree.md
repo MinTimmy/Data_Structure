@@ -1,5 +1,7 @@
 ###### tags: `Data_Structure`
 
+
+looking for: https://towardsdatascience.com/8-useful-tree-data-structures-worth-knowing-8532c7231e8c
 # Tree
 
 
