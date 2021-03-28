@@ -1,11 +1,14 @@
 #include <iostream>
 #include <iomanip>
+#include <string>
 
 using namespace std;
 
 #define N 6
 
+string answer;
 void printTable(char [], int [][N], int [][N]);
+void printAnswer(char [], int [][N], int [][N]);
 int main()
 {
     int r[] = {4,2,3,1,2,2,3};
@@ -29,9 +32,12 @@ int main()
                 if(t < cost[i-1][i+j-1]){
                     cost[i-1][i+j-1] = t;
                     best[i-1][i+j-1] = k-1;
+                    cout << i - 1 << ' ' << i + j - 1 << ' ' << item[best[i-1][i + j -1]] << '\n';
                 }
             }
     printTable(item, cost, best);
+    answer = item;
+    // answer = "ABCDE";
 }
 void printTable(char item[], int cost[][N], int best[][N])
 {
@@ -57,5 +63,11 @@ void printTable(char item[], int cost[][N], int best[][N])
         }
         cout << "\n";
     }
+}
+void printAnswer(char items[], int cost[][N], int best[][N], int right, int left)
+{
+    int i = right;
+    
+    
 }
      

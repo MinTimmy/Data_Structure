@@ -1,0 +1,179 @@
+import collections
+import tkinter as tk
+from tkinter.constants import BOTH, LEFT, N, RIGHT, VERTICAL, Y
+from typing import Collection, Sized
+import sys
+import math
+
+  
+class Application(tk.Frame):
+    def __init__(self, master=None):
+        super().__init__(master)
+        self.master = master
+        self.items = "ABCDEFGHIJKLMNOPQRSTUVWXYZ?"
+        self.create_entry_and_button()
+        self.G = [] # for adjacency matrix to represent graph
+        self.V = 0# number of vertices in graph
+        self.answer_nodeA = []
+        self.answer_nodeB = []
+        self.answer_cost = []
+        # self.create_scrollingbar()
+        
+        # self.printTable()
+        # self.printAnswer()
+
+    def create_entry_and_button(self):
+        self.label1 = tk.Label(self.master, text="r")
+        self.label1.place(x=10, y=10)
+        self.entry1 = tk.Entry(self.master)
+        self.entry1.place(x=20,y=10)
+        
+        tk.Button(self.master, text='Submit', command=self.saveData).place(x = 200, y = 10)
+       
+    def Prim_Algorithm(self):
+        selected = []
+        for i in range(self.V):
+            selected.append(0)
+        # set number of edge to 0
+        no_edge = 0
+        # the number of egde in minimum spanning tree will be
+        # always less than(V - 1), where V is number of vertices in
+        # graph
+        # choose 0th vertex and make it true
+        selected[0] = True
+        # print for edge and weight
+        print("Edge : Weight\n")
+        while (no_edge < self.V - 1):
+            # For every vertex in the set S, find the all adjacent vertices
+            #, calculate the distance from the vertex selected at step 1.
+            # if the vertex is already in the set S, discard it otherwise
+            # choose another vertex nearest to selected vertex  at step 1.
+            minimum = sys.maxsize
+            x = 0
+            y = 0
+            for i in range(self.V):
+                if selected[i]:
+                    for j in range(self.V):
+                        if ((not selected[j]) and self.G[i][j]):  
+                            # not in selected and there is an edge
+                            if minimum > self.G[i][j]:
+                                minimum = self.G[i][j]
+                                x = i
+                                y = j
+            print(str(x) + "-" + str(y) + ":" + str(self.G[x][y]))
+            self.answer_nodeA.append(x)
+            self.answer_nodeB.append(y)
+            self.answer_cost.append(self.G[x][y])
+            selected[y] = True
+            no_edge += 1
+        self.answer_graph()
+        
+    def answer_graph(self):
+        angle = 360 / self.V
+        edgeSize = 200
+        A_site_X = 1000
+        A_site_Y = 400
+
+        node_X = []
+        node_Y = []
+        for i in range(self.V):
+            node_X.append(A_site_X + math.cos(math.radians(angle * i)) * edgeSize)
+            node_Y.append(A_site_Y + math.sin(math.radians(angle * i)) * edgeSize)
+
+        canvas1 = tk.Canvas(self.master,width=max(node_X)-min(node_X),height=max(node_Y) - min(node_Y))
+        canvas1.place(x = min(node_X), y = min(node_Y)) 
+
+        for i in range(len(self.answer_nodeB)):
+            next_node_X = A_site_X + math.cos(math.radians(angle * self.answer_nodeB[i])) * edgeSize
+            next_node_Y = A_site_Y + math.sin(math.radians(angle * self.answer_nodeB[i])) * edgeSize
+            nx = A_site_X + math.cos(math.radians(angle * self.answer_nodeA[i])) * edgeSize
+            ny = A_site_Y + math.sin(math.radians(angle * self.answer_nodeA[i])) * edgeSize 
+            
+            print(nx - min(node_X), ny - min(node_Y), next_node_X - min(node_X), next_node_Y - min(node_Y))
+            canvas1.create_line( nx - min(node_X)+1, ny - min(node_Y)+1, next_node_X - min(node_X)+1, next_node_Y - min(node_Y)+1)
+
+    
+           
+        for i in range(self.V):
+            label1 = tk.Label(self.master, text=self.items[i], bg='red')
+            label1.place(x = A_site_X + math.cos(math.radians(angle * i)) * edgeSize, y = A_site_Y+ math.sin(math.radians(angle * i)) * edgeSize)                               
+
+    def origin_graph(self):
+        angle = 360 / self.V
+        edgeSize = 200
+        A_site = 400
+
+        node_X = []
+        node_Y = []
+        for i in range(self.V):
+            node_X.append(A_site + math.cos(math.radians(angle * i)) * edgeSize)
+            node_Y.append(A_site + math.sin(math.radians(angle * i)) * edgeSize)
+
+        canvas1 = tk.Canvas(self.master,width=max(node_X)-min(node_X),height=max(node_Y) - min(node_Y))
+        canvas1.place(x = min(node_X), y = min(node_Y)) 
+        for i in range(self.V):
+            for j in range(i, self.V):
+                if self.G[i][j]:
+                    next_node_X = A_site + math.cos(math.radians(angle * j)) * edgeSize
+                    next_node_Y = A_site + math.sin(math.radians(angle * j)) * edgeSize
+
+                    # print(node_X[i] - (max(node_X)-min(node_X)), node_Y[i] - (max(node_Y) - max(node_Y)), next_node_X - (max(node_X)-min(node_X)), next_node_Y - (max(node_Y) - max(node_Y)))
+                    canvas1.create_line(node_X[i] - min(node_X) +1, node_Y[i] - min(node_Y) + 1, next_node_X - min(node_X) + 1, next_node_Y - min(node_Y) + 1)
+        for i in range(self.V):
+            label1 = tk.Label(self.master, text=self.items[i], bg='red')
+            label1.place(x = A_site + math.cos(math.radians(angle * i)) * edgeSize, y = A_site+ math.sin(math.radians(angle * i)) * edgeSize)                               
+    
+    def saveData(self): 
+        tmp = ""
+        tmp = self.entry1.get()
+        # create a 2d array of size 5x5
+        # for adjacency matrix to represent graph
+        self.G = [[0, 9, 75, 0, 0],
+             [9, 0, 95, 19, 42],
+            [75, 95, 0, 51, 66],
+            [0, 19, 51, 0, 31],
+            [0, 42, 66, 31, 0]]
+
+        self.V = 5
+        # self.G = [[0, 9, 75, 0, 0,100],
+        #      [9, 0, 95, 19, 42,0],
+        #     [75, 95, 0, 51, 66,0],
+        #     [0, 19, 51, 0, 31,0],
+        #     [0, 42, 66, 31, 0,0],
+        #     [100,0,0,0,0,0]]
+
+        # self.V = 6
+        self.origin_graph()
+        self.Prim_Algorithm()
+    def create_scrollingbar(self):
+        self.main_frame = tk.Frame(self)
+
+        self.main_frame.pack(fill=BOTH, expand=1)
+
+        self.my_canvas = tk.Canvas(self.main_frame)
+        self.my_canvas.pack(side=LEFT, fill=BOTH, expand=1)
+
+        self.my_scrollbar = tk.Scrollbar(self.main_frame, orient=VERTICAL, command=self.my_canvas.yview)
+        self.my_scrollbar.pack(side=RIGHT, fill=Y)
+
+        self.my_canvas.configure(yscrollcommand=self.my_scrollbar.set)
+        self.my_canvas.bind('<Configure>', lambda e: self.my_canvas.configure(scrollregion=self.my_canvas.bbox("all")))
+root = tk.Tk(className='Python Examples - Window Size')
+# scrollbar = tk.Scrollbar(root)
+# scrollbar.pack( side=RIGHT, fill=Y )
+root.geometry("600x400")
+# root.attributes('-fullscreen', True)
+root.fullScreenState = False
+# root.window.bind("<F11>", root.toggleFullScreen)
+# root.window.bind("<Escape>", root.quitFullScreen)
+app = Application(master=root)
+
+
+
+# container = tk.Frame(root)
+# canvas = tk.Canvas(container)
+# scrollbar = tk.Scrollbar(container, orient="vertical", command=canvas.yview)
+# container.pack()
+# canvas.pack(side="left", fill="both", expand=True)
+# scrollbar.pack(side="right", fill="y")
+app.mainloop()
