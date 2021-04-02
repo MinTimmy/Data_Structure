@@ -1,6 +1,9 @@
 import tkinter as tk
 from tkinter.constants import BOTH, LEFT, RIGHT, VERTICAL, Y
 from typing import Counter, Sized
+from tkinter.tix import *
+
+
 class Application(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
@@ -20,7 +23,7 @@ class Application(tk.Frame):
         self.M = 17 #capacity
         self.cost_upper_bound = 0
         self.newLine = 0
-        # self.create_widgets()
+        self.create_scrollingbar()
         self.create_entry_and_button()
 
     def create_entry_and_button(self):
@@ -32,12 +35,10 @@ class Application(tk.Frame):
         self.entry2 = tk.Entry(self.master)
         self.entry2.place(x = 80, y = 30)
 
-
         tk.Button(self.master, text='Submit', command=self.saveData).place(x = 250, y = 10)
         
-        
     def knapsackProblem(self):
-        # print(self.N)
+        self.newLine = 0
         for j in range(1, self.N+1):
             for i in range(1, self.M+1):
                 if i - self.size[j-1] >= 0:
@@ -47,114 +48,66 @@ class Application(tk.Frame):
                     if self.cost[i-1] < self.cost[t] + self.value[j-1]:
                         self.cost[i-1] = self.cost[t] + self.value[j-1]
                         self.best[i-1] = j-1
-            # print(j)
-            # print(self.cost)
-            # print(self.best)
-            # self.printTable(j)
-            self.printAnswer(j)
-    # def knapsackProblem(self):
-    #     print(self.N)
-    #     for j in range(1, self.N+1):
-    #         for i in range(1, self.M+1):
-    #             if i - self.size[j-1] >= 0:
-    #                 t = i-self.size[j-1]-1
-    #                 if t < 0:
-    #                     t = 0
-    #                 if self.cost[i-1] < self.cost[t] + self.value[j-1]:
-    #                     self.cost[i-1] = self.cost[t] + self.value[j-1]
-    #                     self.best[i-1] = j-1
-    #         self.printTable(j)
-    #     self.printAnswer()
-        
-    def printTable(self, j):
-        string = "cost: "
-        for i in self.cost:
-            print( i,end=' ')
-            string += str(i) + ' , '
-        print('\n')
-
-        # label1 = tk.Label(text=str).grid(row=j+4, column=0)
-        label1 = tk.Label(text=string).place(x=50,y=80+j*70)
-
-        string = "best: "
-        for i in self.best:
-            print(self.items[i], end = ' ')
-            string += str(self.items[i]) + ' , '
-        print('\n---------------------------------------------------------\n')
-
-        # label2 = tk.Label(text=str).grid(row=j+5, column=0)
-        label1 = tk.Label(text=string).place(x=50,y=100+j*70)
-
-
+            
+            self.printAnswer(j-1)
  
-    # def printTable(self, j):
-    #     string = "cost: "
-    #     for i in self.cost:
-    #         print( i,end=' ')
-    #         string += str(i) + ' , '
-    #     print('\n')
-
-    #     # label1 = tk.Label(text=str).grid(row=j+4, column=0)
-    #     label1 = tk.Label(text=string).place(x=50,y=80+j*70)
-
-    #     string = "best: "
-    #     for i in self.best:
-    #         print(self.items[i], end = ' ')
-    #         string += str(self.items[i]) + ' , '
-    #     print('\n---------------------------------------------------------\n')
-
-    #     # label2 = tk.Label(text=str).grid(row=j+5, column=0)
-    #     label1 = tk.Label(text=string).place(x=50,y=100+j*70)
-
     def printAnswer(self, j):
         pivot = self.M - 1
         string = ""
         string += self.items[self.best[pivot]]
         pivot -= self.size[self.best[pivot]]
-        count = 0
+        y_gap = 18
+        label3 = tk.Label(text="僅考慮：").place(x = 10, y = 50 + self.newLine * y_gap)
+        str = ""
+        for i in range(j+1):
+            str += "," + self.items[i]
+        label2 = tk.Label(text=str, fg='red').place(x = 50, y = 50 + self.newLine * y_gap)
+        self.newLine += 1
+
         while pivot >= 0:
             if self.best[pivot] == -1:
                 break
             string += " + " + self.items[self.best[pivot]]
-            if len(string) - count * 200 > 200:
-                count += 1
-                string += '\n'
+            if len(string) > 200:
+                label1 = tk.Label(text=string).place(x = 10, y = 50 + self.newLine * y_gap)
+                string = ""
+                self.newLine += 1
             pivot -= self.size[self.best[pivot]]
-        label = tk.Label(text=string)
-        str = 
-        label1 = tk.Label()
-        print(j+self.newLine)
-        label.place(x = 10, y = 40 + (j + self.newLine) * 17)
-        self.newLine += count
-    
-    # def printAnswer(self):
-    #     i = self.M - 1
-    #     while i >=0 and self.cost[i] != 0:
-    #         pivot = i
-    #         string = ""
-    #         string += str(self.cost[pivot]) + " = " + self.items[self.best[pivot]]
-    #         pivot -= self.size[self.best[pivot]]
-    #         while pivot >= 0:
-    #             if self.best[pivot] == -1:
-    #                 break
-    #             string += self.items[self.best[pivot]]
-    #             pivot -= self.size[self.best[pivot]]
-    #         label = tk.Label(text=string)
-    #         label.place(x = 600, y = 10+i*20)
-    #         i-=1
-    # def create_scrollingbar(self):
+        label = tk.Label(text=string).place(x = 10, y = 50 + self.newLine * y_gap)
+        self.newLine += 1
+        str = "-----------"
+        for i in range(5):
+            str += str
+        labe4 = tk.Label(text=str).place(x = 0, y = 50 + self.newLine * y_gap)
+        self.newLine += 1
+    def create_scrollingbar(self):
         self.main_frame = tk.Frame(self)
 
         self.main_frame.pack(fill=BOTH, expand=1)
 
-        self.my_canvas = tk.Canvas(self.main_frame)
+        self.my_canvas = tk.Canvas(self.master)
         self.my_canvas.pack(side=LEFT, fill=BOTH, expand=1)
 
-        self.my_scrollbar = tk.Scrollbar(self.main_frame, orient=VERTICAL, command=self.my_canvas.yview)
+        self.my_scrollbar = tk.Scrollbar(self.master, orient=VERTICAL)
         self.my_scrollbar.pack(side=RIGHT, fill=Y)
+        self.my_scrollbar.configure(command = self.master.yview)
+        
+        # self.master.configure(yscrollcommand=self.my_scrollbar.set)
+        # self.my_canvas.bind('<Configure>', lambda e: self.my_canvas.configure(scrollregion=self.my_canvas.bbox("all")))
 
-        self.my_canvas.configure(yscrollcommand=self.my_scrollbar.set)
-        self.my_canvas.bind('<Configure>', lambda e: self.my_canvas.configure(scrollregion=self.my_canvas.bbox("all")))
+    # def create_scrollingbar(self):
+    #     self.main_frame = tk.Frame(self)
+
+    #     self.main_frame.pack(fill=BOTH, expand=1)
+
+    #     self.my_canvas = tk.Canvas(self.master)
+    #     self.my_canvas.pack(side=LEFT, fill=BOTH, expand=1)
+
+    #     self.my_scrollbar = tk.Scrollbar(self.master, orient=VERTICAL, command=self.my_canvas.yview)
+    #     self.my_scrollbar.pack(side=RIGHT, fill=Y)
+
+    #     self.my_canvas.configure(yscrollcommand=self.my_scrollbar.set)
+    #     self.my_canvas.bind('<Configure>', lambda e: self.my_canvas.configure(scrollregion=self.my_canvas.bbox("all")))
     def saveData(self): 
         tmp = []
         tmp.append(self.entry1.get())
@@ -163,7 +116,8 @@ class Application(tk.Frame):
         if tmp[0] == "" or tmp[1] == "":
             tmp[0] = "670"
             tmp[1] = "Salmon,Tuna,Fenneropenaeus,Gratilla,Kuroge"
-
+        tmp[0] = "2000"
+        tmp[1] = "Salmon,Tuna,Istiophoridae,Fenneropenaeus,Borealis,Adductor,Haliotis,Gratilla,Kuroge,Chionoecetes,Eriocheir,Palinuridae"
         str = ""
         for i in tmp[1]:
             if i != ',':
@@ -185,16 +139,9 @@ class Application(tk.Frame):
         self.N = len(self.items)
         self.M = int(tmp[0])
         self.cost_upper_bound = int(tmp[0])
-        # print(self.N)
-        # print(self.cost_upper_bound)
-        # for i in range(self.N):
-        #     print(self.items[i], self.size[i], self.value[i])
-
         for i in range(self.M):
             self.cost.append(0)
             self.best.append(-1)
-        # print(self.size)
-        # print(self.value)
         self.knapsackProblem()
 
 root = tk.Tk(className='Python Examples - Window Size')
