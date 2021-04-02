@@ -30,28 +30,27 @@ class Application(tk.Frame):
         self.cost = []
         self.best = []
         self.ITEMS = ["Salmon", "Tuna", "Istiophoridae", "Fenneropenaeus", "Borealis", "Adductor", "Haliotis", "Gratilla", "Kuroge", "Chionoecetes", "Eriocheir", "Palinuridae"]
-        self.items = []
+        self.ABBREVIATION = "STIFBAHGKCEP"
+        self.items = [] # it stores integer 
         self.answer = []
         self.N = 0 #number of item
         self.create_entry_and_button()
         self.treeHeight = 0
-        # self.create_scrollingbar()
         
         # self.printTable()
         # self.printAnswer()
 
     def create_entry_and_button(self):
-        self.label1 = tk.Label(self.master, text="r")
+        self.label1 = tk.Label(self.master, text="食材代號:")
         self.label1.place(x=10, y=10)
         self.entry1 = tk.Entry(self.master)
-        self.entry1.place(x=20,y=10)
+        self.entry1.place(x=70,y=10)
         
+        self.label2 = tk.Label(self.master, text="吃的貫數:")
+        self.label2.place(x=10, y=40)
         self.entry2 = tk.Entry(self.master)
-        self.entry2.place(x=20,y=20)
-        tk.Button(self.master, text='Submit', command=self.saveData).place(x = 200, y = 10)
-    def create_widgets(self):
-        self.hi_there = tk.Button(self)
-        label1 = tk.Label(self, text="hello")
+        self.entry2.place(x=70,y=40)
+        tk.Button(self.master, text='Submit', command=self.saveData).place(x = 250, y = 10)
        
     def Optimal_Binary_Searching_Tree(self):
         temp = 0
@@ -74,58 +73,65 @@ class Application(tk.Frame):
                 self.cost[i][i+j] = self.cost[i][i+j] + temp
         
         self.printTable()        
+        self.create_newWindow()
         self.root = TreeNode(self.best[0][self.N-1])
         self.makeTree(self.root, 0, self.N-1)
-        self.nodeX = 1300
+        self.nodeX = 500
         self.nodeY = 10
-        self.printAnswer(self.root, 1300, 10)
-
+        self.printAnswer(self.root, self.nodeX, self.nodeY)
     def printTable(self):
-        self.table_square = 60
-        self.table_size = (self.N +1) * self.table_square
-        string = ""
+        self.table_square_weight = []
+        self.table_square_height = 30
+        self.table_start_x = 10
+        self.table_start_y = 70
+        self.wordPixel = 10
         for i in range(self.N):
-            label1 = tk.Label(self.master, text=self.items[i]).place(x= 30 + self.table_square + self.table_square / 2 + i*self.table_square, y=30+self.table_square/2)
-            label1 = tk.Label(self.master, text=self.items[i]).place(x=30 +self.table_square / 2, y=30 + self.table_square*1.5 + i*self.table_square)
-            canvas1 = tk.Canvas(self.master,bg='red',width=self.table_size,height=1)
-            canvas1.create_line(0,1,self.table_size,1)
-            canvas1.place(x = 30, y = 30 + (i+1)*self.table_square)
-            canvas2 = tk.Canvas(self.master,bg='red',width=1,height=self.table_size)
-            canvas2.create_line(1,0,1,self.table_size)
-            canvas2.place(x = 30+(i+1)*self.table_square, y = 30)
-
-        # for j in range(self.N):
-        #     print(self.best[j])
-
-        for r in range(self.N):
-            for c in range(self.N):
-                if self.cost[r][c] == 0:
-                    string = "?"
-                elif r == c:
-                    string = str(self.cost[r][c])
+            self.table_square_weight.append(len(self.ITEMS[self.items[i]]))
+        count = 0
+        for i in range(self.N):
+            count2 = 0
+            for j in range(self.N):
+                string1 = ""
+                if i < j:
+                    string1 += str(self.cost[i][j]) + self.ABBREVIATION[self.items[self.best[i][j]]]
+                elif i == j:
+                    string1 += str(self.cost[i][j]) + self.ABBREVIATION[self.items[i]]
                 else:
-                    string += self.items[self.best[r][c]] + str(self.cost[r][c])
-                # label1 = tk.Label(self.master, text=string).grid(row=r*2+1,column=c+1)
-                label1 = tk.Label(self.master, text=string).place(x=30+(c+1.5)*(self.table_square),y=30+(r+1.5)*(self.table_square))
-                string = ""
-            # canvas.grid(row=r*2+1)
-        print('\n')
+                    string1 = ""
+                if string1 != "":
+                    label3 = tk.Label(self.master, text=string1).place(x = self.table_start_x + (max(self.table_square_weight) + count2) * self.wordPixel, y = self.table_start_y + (i + 1) * self.table_square_height)
+                count2 += self.table_square_weight[j]
+            label1 = tk.Label(self.master, text=self.ITEMS[self.items[i]]).place(x = self.table_start_x + (max(self.table_square_weight) + count) *self.wordPixel, y = self.table_start_y)
+            label2 = tk.Label(self.master, text=self.ITEMS[self.items[i]]).place(x = self.table_start_x, y = self.table_start_y + (i + 1) * self.table_square_height )
+            canvas1 = tk.Canvas(self.master,width= (sum(self.table_square_weight) + max(self.table_square_weight)) * self.wordPixel,height=1)
+            canvas1.create_line(0,1,(sum(self.table_square_weight) + max(self.table_square_weight))* self.wordPixel, 1)
+            canvas1.place(x=self.table_start_x, y = self.table_start_y + (i + 1) * self.table_square_height )
+            canvas2 = tk.Canvas(self.master, width=1, height=(self.N + 1) * self.table_square_height)
+            canvas2.create_line(1,0,1,(self.N + 1) * self.table_square_height)
+            canvas2.place(x = self.table_start_x + (count + max(self.table_square_weight) )* self.wordPixel, y = self.table_start_y)
+            count += self.table_square_weight[i]
+    
 
     def printAnswer(self, root, nodeX, nodeY):
-        self.nodeToNode = 20
+        self.node_height = 18
+        self.node_weight = 143
+        self.nodeToNode = self.node_weight
+        self.wordPixel = 3
         print(root.val)
-        label1 = tk.Label(self.master, text=self.items[root.val]).place(x = nodeX, y = nodeY)
-       
+        label1 = tk.Label(self.master, text=self.ITEMS[self.items[root.val]], width=18, height=1, bg='blue').place(x = nodeX, y = nodeY)
+        # canvas3 = tk.Canvas(self.master, bg='red',width=143, height=1)
+        # canvas3.create_line(1,0,0,1300)
+        # canvas3.place(x = nodeX, y = nodeY + 18)
 
         if root.left != None:
-            canvas1 = tk.Canvas(self.master,width=(self.treeHeight - root.height) * self.nodeToNode,height=(self.treeHeight - root.height) * self.nodeToNode)
+            canvas1 = tk.Canvas(self.master, bg = 'red', width=(self.treeHeight - root.height) * 18 ,height=(self.treeHeight - root.height) * 18 - self.node_height * self.wordPixel)
             canvas1.create_line(0, (self.treeHeight - root.height) * self.nodeToNode,(self.treeHeight - root.height) * self.nodeToNode,0)
-            canvas1.place(x = nodeX - (self.treeHeight - root.height) * self.nodeToNode +5, y = nodeY + 15)
+            canvas1.place(x = nodeX - (self.treeHeight - root.height) * self.nodeToNode + (self.node_weight / 2) * self.wordPixel, y = nodeY + (self.node_height + 1) * self.wordPixel)
             self.printAnswer(root.left, nodeX - (self.treeHeight - root.height) * self.nodeToNode, nodeY + (self.treeHeight - root.height) * self.nodeToNode )
         if root.right != None:
-            canvas1 = tk.Canvas(self.master,width=(self.treeHeight - root.height) * self.nodeToNode,height=(self.treeHeight - root.height) * self.nodeToNode)
+            canvas1 = tk.Canvas(self.master, width=(self.treeHeight - root.height) * self.nodeToNode,height=(self.treeHeight - root.height) * self.nodeToNode)
             canvas1.create_line(0, 0,(self.treeHeight - root.height) * self.nodeToNode,(self.treeHeight - root.height) * self.nodeToNode-13)
-            canvas1.place(x = nodeX+5, y = nodeY +15)
+            canvas1.place(x = nodeX + (self.treeHeight - root.height) * self.nodeToNode - (self.node_weight / 2) * self.wordPixel, y = nodeY + (self.node_height + 1) * self.wordPixel)
             self.printAnswer(root.right, nodeX + (self.treeHeight - root.height) * self.nodeToNode, nodeY + (self.treeHeight - root.height) * self.nodeToNode)
             # self.root.left
             
@@ -135,10 +141,13 @@ class Application(tk.Frame):
 
     def makeTree(self, root, left, right):
         # print(left, self.best[left][right]-1)
-        root.left = TreeNode(self.best[left][self.best[left][right]-1])
-        root.right = TreeNode(self.best[self.best[left][right]+1][right])
-        root.left.height = root.height + 1
-        root.right.height = root.height + 1
+        print(left, right)
+        if self.best[left][right] - 1 >= 0:
+            root.left = TreeNode(self.best[left][self.best[left][right]-1])
+            root.left.height = root.height + 1
+        if self.best[left][right] + 1 < self.N:
+            root.right = TreeNode(self.best[self.best[left][right]+1][right])
+            root.right.height = root.height + 1
 
         if self.treeHeight < root.height + 1:
             self.treeHeight = root.height + 1
@@ -148,8 +157,9 @@ class Application(tk.Frame):
         if right > self.best[left][right] + 1:
             self.makeTree(root.right, self.best[left][right]+1,right)
 
-
-
+    def create_newWindow(self):
+        self.master = tk.Tk(className="Optimal_Binary_Searching_Tree - 2")
+        self.master.geometry("600x400")
 
     def saveData(self): 
         tmp = []
@@ -159,15 +169,15 @@ class Application(tk.Frame):
         if tmp[0] == "" or tmp[1] == "":
             tmp[0] = "SIFAP"
             tmp[1] = "41,26,18,13,55"
-
+        # tmp[0] = "STIFBAHGKCEP"
+        # tmp[1] = "21,32,43,32,45,56,67,87,45,34,23,54"
         self.N = 0
         self.cost = []
         self.best = []
         self.freq = []
-        items = "STIFBAHGKCEP"
         for i in tmp[0]:
-            for j in range(len(items)):
-                if i == items[j]:
+            for j in range(len(self.ABBREVIATION)):
+                if i == self.ABBREVIATION[j]:
                     self.items.append(j)
                     break
         string1 = ""
@@ -200,10 +210,11 @@ class Application(tk.Frame):
         # print(self.freq)
         # for i in range(self.N):
         #     print(self.best[i])
+        #     print(self.cost[i])
 
-        # self.Optimal_Binary_Searching_Tree()
+        self.Optimal_Binary_Searching_Tree()
 
-root = tk.Tk(className='Python Examples - Window Size')
+root = tk.Tk(className='Optimal_Binary_Searching_Tree - 1')
 # scrollbar = tk.Scrollbar(root)
 # scrollbar.pack( side=RIGHT, fill=Y )
 root.geometry("600x400")

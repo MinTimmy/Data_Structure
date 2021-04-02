@@ -73,9 +73,9 @@ class Application(tk.Frame):
         self.printTable()        
         self.root = TreeNode(self.best[0][self.N-1])
         self.makeTree(self.root, 0, self.N-1)
-        self.nodeX = 1300
+        self.nodeX = 700
         self.nodeY = 10
-        self.printAnswer(self.root, 1300, 10)
+        self.printAnswer(self.root, self.nodeX, self.nodeY)
 
     def printTable(self):
         self.table_square = 60
