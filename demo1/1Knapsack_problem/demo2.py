@@ -10,8 +10,6 @@ class Application(tk.Frame):
         
         self.master = master
         canvas = tk.Canvas(master)
-        # self.master = tk.Frame(canvas)
-        # self.master = tk.Canvas(master)
         self.pack()
         self.SIZE = [153, 260, 67, 93, 152, 50, 58, 13, 166, 77, 151, 60]
         self.size = []
@@ -96,8 +94,8 @@ class Application(tk.Frame):
         if tmp[0] == "" or tmp[1] == "":
             tmp[0] = "670"
             tmp[1] = "Salmon,Tuna,Fenneropenaeus,Gratilla,Kuroge"
-        tmp[0] = "2000"
-        tmp[1] = "Salmon,Tuna,Istiophoridae,Fenneropenaeus,Borealis,Adductor,Haliotis,Gratilla,Kuroge,Chionoecetes,Eriocheir,Palinuridae"
+        # tmp[0] = "2000"
+        # tmp[1] = "Salmon,Tuna,Istiophoridae,Fenneropenaeus,Borealis,Adductor,Haliotis,Gratilla,Kuroge,Chionoecetes,Eriocheir,Palinuridae"
         str = ""
         for i in tmp[1]:
             if i != ',':
@@ -128,7 +126,5 @@ root = tk.Tk(className='Knapsack_Problem - 1')
 root.geometry("600x400")
 root.fullScreenState = False
 app = Application(master=root)
-
-
 
 app.mainloop()

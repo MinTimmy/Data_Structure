@@ -106,7 +106,7 @@ class Application(tk.Frame):
             label1.place(x = A_site[0] + math.cos(math.radians(angle * i)) * edgeSize, y = A_site[1]+ math.sin(math.radians(angle * i)) * edgeSize)                               
 
     def create_newWindow(self):
-        self.master = tk.Tk(className="Optimal_Binary_Searching_Tree - " + str(len(self.answer_node[0]) + 1))
+        self.master = tk.Tk(className="Prim_Algorithm - " + str(len(self.answer_node[0]) + 1))
         self.master.geometry("600x400")
         
  
@@ -186,7 +186,7 @@ class Application(tk.Frame):
 
         self.my_canvas.configure(yscrollcommand=self.my_scrollbar.set)
         self.my_canvas.bind('<Configure>', lambda e: self.my_canvas.configure(scrollregion=self.my_canvas.bbox("all")))
-root = tk.Tk(className='Python Examples - Window Size')
+root = tk.Tk(className='Prim_Algorithm - 0')
 root.geometry("600x400")
 root.fullScreenState = False
 app = Application(master=root)
