@@ -36,7 +36,7 @@ class Application(tk.Frame):
         self.N = 0 #number of item
         self.create_entry_and_button()
         self.treeHeight = 0
-        
+        # self.cavans = self.create_cavans()
         # self.printTable()
         # self.printAnswer()
 
@@ -76,7 +76,7 @@ class Application(tk.Frame):
         self.create_newWindow()
         self.root = TreeNode(self.best[0][self.N-1])
         self.makeTree(self.root, 0, self.N-1)
-        self.nodeX = 500
+        self.nodeX = 600
         self.nodeY = 10
         self.printAnswer(self.root, self.nodeX, self.nodeY)
     def printTable(self):
@@ -112,33 +112,49 @@ class Application(tk.Frame):
             count += self.table_square_weight[i]
     
 
+    def create_cavans(self):
+        # self.cavans = tk.Canvas(self.master, bg = 'red', width=10000, height=10000)
+        self.cavans = tk.Canvas(self.master, width=10000, height=10000)
+        self.cavans.place(x = 0, y = 0) 
+        
     def printAnswer(self, root, nodeX, nodeY):
-        print("tree height: ",self.treeHeight)
-        self.node_height = 18
-        self.node_weight = 110
-        self.nodeToNode_height = 45
-        self.nodeToNode_width = 150
-        self.wordPixel = 3
-        print(root.val)
-        label1 = tk.Label(self.master, text=self.ITEMS[self.items[root.val]], width=16, height=1, bg='blue').place(x = nodeX, y = nodeY)
-        # canvas3 = tk.Canvas(self.master, bg='red',width=143, height=1)
-        # canvas3.create_line(1,0,0,1300)
-        # canvas3.place(x = nodeX, y = nodeY + 18)
+        # print("tree height: ",self.treeHeight)
+        self.node_height = 20
+        self.node_width = 110
+        self.nodeToNode_height = 60
+        self.nodeToNode_width = 60
+        self.wordPixel = 10
+        # print(root.val)
+        label1 = tk.Label(self.master, text=self.ITEMS[self.items[root.val]], width=13, height=1, bg='blue').place(x = nodeX, y = nodeY)
+        canvas3 = tk.Canvas(self.master, bg='red',width=110, height=1)
+        canvas3.create_line(1,0,0,1300)
+        canvas3.place(x = nodeX, y = nodeY + 18)
+
+        if root.right != None and root.right.val != -1:
+            # canvas2 = tk.Canvas(self.master, width=(self.treeHeight - root.height) * self.nodeToNode_width,height=(self.treeHeight - root.height) * self.nodeToNode_height)
+            # canvas2.create_line(0, 0,(self.treeHeight - root.height) * self.nodeToNode_width,(self.treeHeight - root.height) * self.nodeToNode_height-13)
+            # canvas2.place(x = nodeX + (self.treeHeight - root.height) * self.nodeToNode_width - (self.node_width / 2) * self.wordPixel, y = nodeY + (self.node_height + 1) * self.wordPixel)
+            # print("right")
+            nextNodeX = nodeX + (self.treeHeight - root.height) * self.nodeToNode_width
+            nextNodeY = nodeY + self.nodeToNode_height
+
+            self.cavans.create_line(nodeX + self.node_width / 2, nodeY + self.node_height, nextNodeX + self.node_width / 2, nextNodeY)
+            # print("right ", self.treeHeight - root.height, " ", nodeX + self.node_width / 2, nodeY + self.node_height, nodeX + self.node_width / 2 + (self.treeHeight - root.height) * self.wordPixel * 4, nodeY + self.node_height + self.nodeToNode_height + 30)
+
+            self.printAnswer(root.right, nextNodeX, nextNodeY)
+            # self.root.left
 
         if root.left != None and root.left.val != -1:
-            canvas1 = tk.Canvas(self.master, bg = 'red', width=(self.treeHeight - root.height) * 18 ,height=(self.treeHeight - root.height) * 18 - self.node_height * self.wordPixel)
-            canvas1.create_line(0, (self.treeHeight - root.height) * self.nodeToNode_height,(self.treeHeight - root.height) * self.nodeToNode_width,0)
-            canvas1.place(x = nodeX - (self.treeHeight - root.height) * self.nodeToNode_width + (self.node_weight / 2) * self.wordPixel, y = nodeY + (self.node_height + 1) * self.wordPixel)
-            print("left")
-            self.printAnswer(root.left, nodeX - (self.treeHeight - root.height) * self.nodeToNode_width, nodeY + (self.treeHeight - root.height) * self.nodeToNode_height )
+            # canvas1 = tk.Canvas(self.master, bg = 'red', width=(self.treeHeight - root.height) * self.wordPixel +self.node_width,height=(self.treeHeight - root.height) * self.wordPixel - self.node_height * self.wordPixel)
+            # canvas1.create_line(0, (self.treeHeight - root.height) * self.nodeToNode_height,(self.treeHeight - root.height) * self.nodeToNode_width,0)
+            # canvas1.place(x = nodeX - (self.treeHeight - root.height) * self.wordPixel - self.node_width, y = nodeY + (self.node_height + 1) * self.wordPixel - self.node_height)
+            nextNodeX = nodeX - (self.treeHeight - root.height) * self.nodeToNode_width 
+            nextNodeY =  nodeY + self.nodeToNode_height 
+            self.cavans.create_line(nodeX + self.node_width / 2, nodeY + self.node_height, nextNodeX + self.node_width / 2, nextNodeY)
+            print("left ", self.treeHeight - root.height)
+            # self.cavans = tk.Canvas(self.master, bg = 'red', width=10000, height=10000)
+            self.printAnswer(root.left, nextNodeX, nextNodeY)
         
-        if root.right != None and root.right.val != -1:
-            canvas2 = tk.Canvas(self.master, width=(self.treeHeight - root.height) * self.nodeToNode_width,height=(self.treeHeight - root.height) * self.nodeToNode_height)
-            canvas2.create_line(0, 0,(self.treeHeight - root.height) * self.nodeToNode_width,(self.treeHeight - root.height) * self.nodeToNode_height-13)
-            canvas2.place(x = nodeX + (self.treeHeight - root.height) * self.nodeToNode_width - (self.node_weight / 2) * self.wordPixel, y = nodeY + (self.node_height + 1) * self.wordPixel)
-            print("right")
-            self.printAnswer(root.right, nodeX + (self.treeHeight - root.height) * self.nodeToNode_width, nodeY + (self.treeHeight - root.height) * self.nodeToNode_height)
-            # self.root.left
             
 
 
@@ -147,24 +163,32 @@ class Application(tk.Frame):
     def makeTree(self, root, left, right):
         # print(left, self.best[left][right]-1)
         # print(left, right)
-        if self.best[left][right] - 1 >= 0:
+        if self.best[left][right] - 1 >= left and left != right:
             root.left = TreeNode(self.best[left][self.best[left][right]-1])
             root.left.height = root.height + 1
-        if self.best[left][right] + 1 < self.N:
+            # print("left ", root.left.height, " : ", root.left.val)
+        if self.best[left][right] + 1 <= right and left != right:
             root.right = TreeNode(self.best[self.best[left][right]+1][right])
             root.right.height = root.height + 1
+            # print("right", root.right.height, " : ",root.right.val)
+            # if root.right.height == 4:
+            #     print(left, right)
 
         if self.treeHeight < root.height + 1:
             self.treeHeight = root.height + 1
         
-        if left < self.best[left][right] - 1:
+        # if left < self.best[left][right] - 1:
+        if root.left != None and left != self.best[left][right] - 1:
+            # print(root.val)
             self.makeTree(root.left, left, self.best[left][right] - 1)
-        if right > self.best[left][right] + 1:
+        # if right > self.best[left][right] + 1:
+        if root.right != None and self.best[left][right] + 1 != right:
             self.makeTree(root.right, self.best[left][right]+1,right)
 
     def create_newWindow(self):
         self.master = tk.Tk(className="Optimal_Binary_Searching_Tree - 2")
         self.master.geometry("600x400")
+        self.create_cavans()
 
     def saveData(self): 
         tmp = []
@@ -204,11 +228,13 @@ class Application(tk.Frame):
             for j in range(self.N):
                 if i == j:
                     temp.append(self.freq[i])
+                    t.append(i)
                 elif i > j:
                     temp.append(0)
+                    t.append(-1)
                 else:
                     temp.append(sys.maxsize)
-                t.append(-1)
+                    t.append(-1)
             self.best.append(t)
             self.cost.append(temp)
 
