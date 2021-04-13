@@ -125,7 +125,7 @@ class Application(tk.Frame):
         self.nodeToNode_width = 60
         self.wordPixel = 10
         # print(root.val)
-        label1 = tk.Label(self.master, text=self.ITEMS[self.items[root.val]], width=13, height=1, bg='blue').place(x = nodeX, y = nodeY)
+        label1 = tk.Label(self.master, text=self.ITEMS[self.items[root.val]], width=13, height=1, bg='blue', fg = 'red').place(x = nodeX, y = nodeY)
         canvas3 = tk.Canvas(self.master, bg='red',width=110, height=1)
         canvas3.create_line(1,0,0,1300)
         canvas3.place(x = nodeX, y = nodeY + 18)

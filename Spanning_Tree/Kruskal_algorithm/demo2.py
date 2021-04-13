@@ -17,6 +17,7 @@ class Application(tk.Frame):
         self.V = 0# number of vertices in graph
         self.answer_node = [[],[]]
         self.answer_cost = []
+        self.graph = []
 
     def create_entry_and_button(self):
         self.label1 = tk.Label(self.master, text="店代號")
@@ -30,46 +31,51 @@ class Application(tk.Frame):
         self.entry2.place(x=100,y=40)
         tk.Button(self.master, text='Submit', command=self.saveData).place(x = 300, y = 10)
        
-    def Prim_Algorithm(self):
-        selected = []
-        for i in range(self.V):
-            selected.append(0)
-        # set number of edge to 0
-        no_edge = 0
-        # the number of egde in minimum spanning tree will be
-        # always less than(V - 1), where V is number of vertices in
-        # graph
-        # choose 0th vertex and make it true
-        selected[0] = True
-        # print for edge and weight
-        print("Edge : Weight\n")
-        while (no_edge < self.V - 1):
-            # For every vertex in the set S, find the all adjacent vertices
-            #, calculate the distance from the vertex selected at step 1.
-            # if the vertex is already in the set S, discard it otherwise
-            # choose another vertex nearest to selected vertex  at step 1.
-            minimum = sys.maxsize
-            x = 0
-            y = 0
-            for i in range(self.V):
-                if selected[i]:
-                    for j in range(self.V):
-                        if ((not selected[j]) and self.G[i][j]):  
-                            # not in selected and there is an edge
-                            if minimum > self.G[i][j]:
-                                minimum = self.G[i][j]
-                                x = i
-                                y = j
-            print(str(x) + "-" + str(y) + ":" + str(self.G[x][y]))
-            self.answer_node[0].append(min(x,y))
-            self.answer_node[1].append(max(x,y))
-            self.answer_cost.append(self.G[x][y])
-            selected[y] = True
-            no_edge += 1
-            self.draw_graph()
-        # self.draw_graph()
-        
+    def add_edge(self, u, v, w):
+        self.graph.append([u, v ,w])
+    def find(self, parent, i):
+        if parent[i] == i:
+            return i
+        return self.find(parent, parent[i])
+    def apply_union(self, parent, rank, x, y):
+        xroot = self.find(parent, x)
+        yroot = self.find(parent, y)
+        if rank[xroot] < rank[yroot]:
+            parent[xroot] = yroot
+        elif rank[xroot] > rank[yroot]:
+            parent[yroot] = xroot
+        else:
+            parent[yroot] = xroot
+            rank[xroot] += 1
 
+    #  Applying Kruskal algorithm
+    def kruskal_algo(self):
+        result = []
+        i, e = 0, 0
+        self.graph = sorted(self.graph, key=lambda item: item[2])
+        parent = []
+        rank = []
+        for node in range(self.V):
+            parent.append(node)
+            rank.append(0)
+        while e < self.V - 1:
+            u, v, w = self.graph[i]
+            i = i + 1
+            x = self.find(parent, u)
+            y = self.find(parent, v)
+            if x != y:
+                e = e + 1
+                # result.append([u, v, w])
+                self.answer_node[0].append(v)
+                self.answer_node[1].append(u)
+                self.answer_cost.append(w)
+                # for i in range(len(self.answer_node[0])):
+                #     print(self.answer_node[0][i], self.answer_node[1][i])
+                self.apply_union(parent, rank, x, y)
+                self.draw_graph()
+        # for u, v, weight in result:
+        #     print("%d - %d: %d" % (u, v, weight))
+ 
     def draw_graph(self):
         self.create_newWindow()
         angle = 360 / self.V
@@ -93,7 +99,9 @@ class Application(tk.Frame):
                     linePoint = [node_X[i] - min(node_X) , node_Y[i] - min(node_Y) , next_node_X - min(node_X) , next_node_Y - min(node_Y)]
                     is_draw = True
                     for k in range(len(self.answer_node[0])):
+                        print(i,j)
                         if i == self.answer_node[0][k] and j == self.answer_node[1][k]:
+                            print(i, j)
                             canvas1.create_line(linePoint[0], linePoint[1], linePoint[2], linePoint[3], fill = 'red', width = 5)
                             is_draw = False
 
@@ -106,7 +114,7 @@ class Application(tk.Frame):
             label1.place(x = A_site[0] + math.cos(math.radians(angle * i)) * edgeSize, y = A_site[1]+ math.sin(math.radians(angle * i)) * edgeSize)                               
 
     def create_newWindow(self):
-        self.master = tk.Tk(className="Prim_Algorithm - " + str(len(self.answer_node[0]) + 1))
+        self.master = tk.Tk(className="Kruskal_algorithm - " + str(len(self.answer_node[0]) + 1))
         self.master.geometry("600x400")
         
  
@@ -114,51 +122,6 @@ class Application(tk.Frame):
         tmp = []
         tmp.append(self.entry1.get())
         tmp.append(self.entry2.get())
-        # create a 2d array of size 5x5
-        # for adjacency matrix to represent graph
-        if tmp[0] == "" or tmp[1] == "":
-            # self.G = [
-            #     [0, 1, 0, 0, 0],
-            #     [1, 0, 2, 6, 0],
-            #     [0, 2, 0, 3, 0],
-            #     [0, 6, 3, 0, 6],
-            #     [0, 0, 0, 6, 0]]
-            # self.V = 5
-            tmp[0] = "ABCDE"
-            tmp[1] = "(B,A,1)(B,C,2)(C,D,3)(D,B,6)(D,E,6)"
-        
-        self.V = len(tmp[0])
-        for i in tmp[0]:
-            self.items.append(i)
-        
-        t = [[],[],[]]
-        for i in range(len(tmp[1])):
-            if i % 7 == 1:
-                j = 0
-                while tmp[1][i] != self.items[j]:
-                    j += 1
-                t[0].append(j)
-            elif i % 7 == 3:
-                j = 0
-                while tmp[1][i] != self.items[j]:
-                    j += 1
-                t[1].append(j)
-            elif i % 7 == 5:
-                t[2].append(int(tmp[1][i]))
-
-
-        for i in range(self.V):
-            tt = []
-            for j in range(self.V):
-                tt.append(0)
-            self.G.append(tt)
-        
-        for i in range(len(t[0])):
-            self.G[t[0][i]][t[1][i]] = t[2][i]
-            self.G[t[1][i]][t[0][i]] = t[2][i]
-                
-
-
         # other dataset
         # self.G = [
         #     [0, 9, 75, 0, 0,100],
@@ -171,22 +134,24 @@ class Application(tk.Frame):
         # self.V = 6
         # self.items = ['A', 'B', 'C', 'D', 'E', 'F']
 
-
-        # other dataset
-        # self.G = [
-        #     [0,4,0,3,0,8],
-        #     [4,0,0,0,7,9],
-        #     [0,0,0,5,1,0],
-        #     [3,0,5,0,2,0],
-        #     [0,0,1,2,0,6],
-        #     [8,9,0,0,6,0],
-        # ]
-        # self.V = len(self.G[0])
-        # self.items.clear()
-        # self.items = ['A', 'B', 'C', 'D', 'E', 'F']
+        self.G = [
+            [0,4,0,3,0,8],
+            [4,0,0,0,7,9],
+            [0,0,0,5,1,0],
+            [3,0,5,0,2,0],
+            [0,0,1,2,0,6],
+            [8,9,0,0,6,0],
+        ]
+        self.V = len(self.G[0])
+        self.items.clear()
+        for i in range(len(self.G[0])):
+            for j in range(len(self.G[0])):
+                if i >= j and self.G[i][j]:
+                    self.add_edge(i, j, self.G[i][j])
+        self.items = ['A', 'B', 'C', 'D', 'E', 'F']
         
         self.draw_graph()
-        self.Prim_Algorithm()
+        self.kruskal_algo()
     def create_scrollingbar(self):
         self.main_frame = tk.Frame(self)
 
@@ -200,7 +165,7 @@ class Application(tk.Frame):
 
         self.my_canvas.configure(yscrollcommand=self.my_scrollbar.set)
         self.my_canvas.bind('<Configure>', lambda e: self.my_canvas.configure(scrollregion=self.my_canvas.bbox("all")))
-root = tk.Tk(className='Prim_Algorithm - 0')
+root = tk.Tk(className='Kruskal_algorithm - 0')
 root.geometry("600x400")
 root.fullScreenState = False
 app = Application(master=root)

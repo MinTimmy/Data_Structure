@@ -50,7 +50,33 @@ class Application(tk.Frame):
                         self.best[i-1] = j-1
             
             self.printAnswer(j-1)
- 
+        self.printFinalAnswer()
+    
+    def printFinalAnswer(self):
+        count = []
+        final_value = 0
+        for i in range(self.N):
+            count.append(0)
+        pivot = self.M - 1
+        while pivot >= 0:
+            if self.best[pivot] == -1:
+                break
+            count[self.best[pivot]]+=1
+            final_value += self.value[self.best[pivot]]
+            pivot -= self.size[self.best[pivot]]
+        string = "當背包大小為 "
+        string += str(self.M)
+
+        for i in range(self.N):
+            if count[i] != 0:
+                string += ",拿" + self.items[i] + " " + str(count[i]) + "個"
+                # print(self.items[i], count[i])
+        string += ",得總價值" + str(final_value)
+        # print(string)
+        # print(final_value)
+
+        label = tk.Label(self.master, text=string).place(x = 10, y = 50 + self.newLine * 18)
+
     def printAnswer(self, j):
         pivot = self.M - 1
         string = ""
@@ -94,8 +120,8 @@ class Application(tk.Frame):
         if tmp[0] == "" or tmp[1] == "":
             tmp[0] = "670"
             tmp[1] = "Salmon,Tuna,Fenneropenaeus,Gratilla,Kuroge"
-        tmp[0] = "2000"
-        tmp[1] = "Salmon,Tuna,Istiophoridae,Fenneropenaeus,Borealis,Adductor,Haliotis,Gratilla,Kuroge,Chionoecetes,Eriocheir,Palinuridae"
+        # tmp[0] = "2000"
+        # tmp[1] = "Salmon,Tuna,Istiophoridae,Fenneropenaeus,Borealis,Adductor,Haliotis,Gratilla,Kuroge,Chionoecetes,Eriocheir,Palinuridae"
         str = ""
         for i in tmp[1]:
             if i != ',':
