@@ -40,20 +40,38 @@ def to_be_visited():
 #          [0,0,0,0,0,0,1],
 #          [0,0,0,0,0,0,0]]
 
-vertices = [[0,1,0,1,0,0,0],
-            [0,0,1,0,0,0,0],
-            [0,0,0,0,0,1,1],
-            [0,0,0,0,1,0,0],
-            [0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,1],
-            [0,0,0,0,0,0,0],]
-edges = [[0,2,0,3,0,0,0],
-         [0,0,5,0,0,0,0],
-         [0,0,0,0,0,4,3],
-         [0,0,0,0,5,0,0],
-         [0,0,0,0,0,0,0],
-         [0,0,0,0,0,0,1],
-         [0,0,0,0,0,0,0]]
+# vertices = [[0,1,0,1,0,0,0],
+#             [0,0,1,0,0,0,0],
+#             [0,0,0,0,0,1,1],
+#             [0,0,0,0,1,0,0],
+#             [0,0,0,0,0,0,0],
+#             [0,0,0,0,0,0,1],
+#             [0,0,0,0,0,0,0],]
+# edges = [[0,2,0,3,0,0,0],
+#          [0,0,5,0,0,0,0],
+#          [0,0,0,0,0,4,3],
+#          [0,0,0,0,5,0,0],
+#          [0,0,0,0,0,0,0],
+#          [0,0,0,0,0,0,1],
+#          [0,0,0,0,0,0,0]]
+
+vertices = [[0,1,1,1,1,0,0,0],
+            [1,0,1,0,1,0,0,0],
+            [1,1,0,1,0,0,0,1],
+            [1,0,1,0,0,1,0,0],
+            [1,1,0,0,0,0,1,1],
+            [0,0,0,1,0,0,0,1],
+            [0,0,0,0,1,0,0,1],
+            [0,0,1,0,1,1,1,0]
+          ]
+edges = [[0,4,5,2,12,0,0,0],
+         [4,0,3,0,1,0,0,0,0],
+         [5,3,0,1,0,0,0,13],
+         [2,0,1,0,0,11,0,0],
+         [12,1,0,0,0,0,6,9],
+         [0,0,0,11,0,0,0,8],
+         [0,0,0,0,6,0,0,7],
+         [0,0,13,0,9,8,7,0]]
 number_of_vertices = len(vertices[0])
 
 # The first element of the lists inside visited_and_distance 
@@ -94,31 +112,12 @@ for distance in visited_and_distance:
   print(items[i],"   ",distance[1],"   ",items[previous_node[i]])
   i = i + 1
 
-# print(previous_node[0])
 
-# a_next_node=[0]
-# for i in range(number_of_vertices-1):
-#   a_next_node.append(0)
-
-# def find(theNode,answerNode):
-#   for i in range(number_of_vertices):
-#     if previous_node[i] == theNode:
-#       a_next_node[i]=answerNode
-#       find(i,answerNode)
-
-# temp=[-1]
-# for i in range(number_of_vertices):
-#   if previous_node[i] == 0:
-#     temp.append(i)
-
-# for i in temp:
-#   find(i,i)
-
-# i=0
-# print("Routing Table for Node A")
-# fix_string="{0:>11}".format("Destination")  + "{0:>7}".format("Cost") + "{0:>11}".format("NextNode")
-# print(fix_string)
-# for distance in visited_and_distance:
-#   print(chr(ord('a') + i),"           ",distance[1],"{0:>6}".format(chr(ord('a') + a_next_node[i])))
-#   i+=1
-# print(a_next_node)
+for i in range(number_of_vertices):
+  string = items[i]
+  j = i
+  temp = previous_node[i]
+  while previous_node[j] != -1:
+    j = previous_node[j]
+    string =  items[j] + "->" + string
+  print(i, string, visited_and_distance[i][1])
