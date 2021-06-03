@@ -194,7 +194,7 @@ class Application(tk.Frame):
         tmp = []
         tmp.append(self.entry1.get())
         tmp.append(self.entry2.get())
-
+        
         if tmp[0] == "" or tmp[1] == "":
             tmp[0] = "SIFAP"
             tmp[1] = "41,26,18,13,55"
