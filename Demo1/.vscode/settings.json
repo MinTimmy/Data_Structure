@@ -1,7 +1,0 @@
-{
-    "python.linting.pylintEnabled": true,
-    "python.linting.enabled": true,
-    "python.pythonPath": "/usr/bin/python3",
-   // "python.linting.pylintArgs": ["--load-plugins", "pylint_protobuf"],
-    "python.linting.pylintArgs": ["--extension-pkg-whitelist=PyQt5"]
-}
