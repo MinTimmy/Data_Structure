@@ -23,7 +23,7 @@ class Application(tk.Frame):
         self.entry1 = tk.Entry(self.master)
         self.entry1.place(x=90,y=10)
 
-        self.label2 = tk.Label(self.master, text="矩陣名稱：")
+        self.label2 = tk.Label(self.master, text="矩陣大小：")
         self.label2.place(x=10, y=30)
         self.entry2 = tk.Entry(self.master)
         self.entry2.place(x=90,y=30)
