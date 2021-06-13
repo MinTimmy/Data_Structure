@@ -1,2 +1,8 @@
-n = [[0 for i in range(10)] for j in range(10)]
-print(n)
+a = 'QBCDEHFG'
+b = []
+for i in a:
+    b.append(i)
+# a.sort()
+# print(sorted(a[1:]))
+b = [b[0]] + sorted(b[1:])
+print(b)

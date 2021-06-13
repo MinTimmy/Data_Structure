@@ -27,7 +27,6 @@ class Application(tk.Frame):
         tk.Button(self.master, text="Submit", command=self.save_data).place(x=300,y=10)
 
     def draw_F(self):
-
         self.init_point = [10,50]
         self.scale = 800
         self.Arrow = 10
@@ -70,6 +69,7 @@ class Application(tk.Frame):
         self.area = 1 * self.counter / self.N
         self.label3 = tk.Label(self.canvas1, text="面積大約為： " + str(self.area),background='green')
         self.label3.place(x = 5, y = 5)
+        self.counter = 0
             
 
 

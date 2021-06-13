@@ -1,7 +1,4 @@
-import collections
 import tkinter as tk
-from tkinter.constants import BOTH, LEFT, N, RIGHT, VERTICAL, Y
-from typing import Collection, Sized
 import sys
 
 class Application(tk.Frame):
@@ -15,6 +12,9 @@ class Application(tk.Frame):
         self.items = "ABCDEFGHIJKLMNOPQRSTUVWXYZ?"
         self.answer = []
         self.N = 0 #number of item
+        self.label_answer1_text = tk.StringVar()
+        self.label_answer2_text = tk.StringVar()
+        self.create_label_answer()
         self.create_entry_and_button()
        
     def create_entry_and_button(self):
@@ -30,9 +30,15 @@ class Application(tk.Frame):
         
         tk.Button(self.master, text='Submit', command=self.saveData).place(x = 270, y = 10)
    
+    def create_label_answer(self):
+        init_point = [10, 50]
+        font_size = 90
+        self.label_answer1 = tk.Label(self.master, textvariable=self.label_answer1_text, font=("Arial", font_size)).place(x = init_point[0], y = init_point[1])
+        self.label_answer2 = tk.Label(self.master, textvariable=self.label_answer2_text, font = ("Arial", font_size)).place(x = init_point[0], y = init_point[1] + font_size*2)
+        
        
     def Matrix_Chain_Production(self):
-        print(self.N, end='\n')
+        # print(self.N, end='\n')
         for j in range(1, self.N):
             for i in range(1, self.N-j+1):
                 for k in range(i+1, i+j+1):
@@ -44,14 +50,11 @@ class Application(tk.Frame):
         self.printAnswer(0, self.N-1)
         string = '矩陣： '
         for i in self.answer:
-            string += i
-        label1 = tk.Label(self.master, text=string).place(x = 400, y = 10)
+            string  += i
+        self.label_answer1_text.set(string)
 
-        string = "矩陣相乘次數最小值："
-        string += str(self.cost[0][self.N - 1])
-        string += " 次"
-        label2 = tk.Label(self.master, text=string).place(x = 400, y = 30)
-
+        self.label_answer2_text.set("矩陣相乘次數最小值：" + str(self.cost[0][self.N - 1]) + " 次")
+        
         # self.printTable()
        
     def printTable(self):
@@ -84,8 +87,6 @@ class Application(tk.Frame):
         print('\n')
 
     def printAnswer(self, left, right):
-        # print("left: ", left, '\t', "right: ", right)
-
         i = 0
         while self.answer[i] != self.items[left]:
             i+=1
@@ -111,6 +112,12 @@ class Application(tk.Frame):
             self.printAnswer(self.best[left][right], right)
 
     def saveData(self): 
+        self.r= []
+        self.cost = []
+        self.best = []
+        self.answer = []
+        self.N = 0
+
         self.items = self.entry1.get()
         if self.entry1.get() == '':
             self.items = 'ABCDEF'
@@ -162,7 +169,7 @@ class Application(tk.Frame):
             self.answer.append(self.items[i])
         self.Matrix_Chain_Production()
 
-root = tk.Tk(className='Python Examples - Window Size')
+root = tk.Tk(className='Matrix Chain Production')
 root.geometry("600x400")
 root.fullScreenState = False
 app = Application(master=root)
