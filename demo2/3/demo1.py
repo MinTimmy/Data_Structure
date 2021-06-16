@@ -1,11 +1,13 @@
 import tkinter as tk
 import random
+import math
+from sympy import *  
 
 class Application(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
         self.master = master
-        self.canvas1 = tk.Canvas(self.master, width=1000, height=1000, background='green')
+        self.canvas1 = tk.Canvas(self.master, width=1000, height=1000, background='ghostwhite')
         self.canvas1.place(x = 100, y=100)
         self.N = 0
         self.P = 0
@@ -40,17 +42,18 @@ class Application(tk.Frame):
         self.canvas1.create_line(self.init_point[0] + self.Arrow, self.init_point[1] + 1 * self.scale - self.Arrow, self.init_point[0], self.init_point[1] + 1 * self.scale, width=2 )
 
         # create X Y
+        size_X_Y = 10
         center = [self.init_point[0] + 1 * self.scale + 20, self.init_point[1] ]
-        self.canvas1.create_line(center[0] - 5, center[1] - 5, center[0] + 5, center[1] +5, width=2)
-        self.canvas1.create_line(center[0] - 5, center[1] + 5, center[0] + 5, center[1] -5, width=2)
+        self.canvas1.create_line(center[0] - size_X_Y, center[1] - size_X_Y, center[0] + size_X_Y, center[1] +size_X_Y, width=2)
+        self.canvas1.create_line(center[0] - size_X_Y, center[1] + size_X_Y, center[0] + size_X_Y, center[1] -size_X_Y, width=2)
         center = [self.init_point[0] , self.init_point[1] + 1 * self.scale + 20]
-        self.canvas1.create_line(center[0] - 5, center[1] - 5, center[0], center[1], width=2)
-        self.canvas1.create_line(center[0] + 5, center[1] - 5, center[0], center[1], width=2)
-        self.canvas1.create_line(center[0], center[1], center[0], center[1] + 5, width=2)
+        self.canvas1.create_line(center[0] - size_X_Y, center[1] - size_X_Y, center[0], center[1], width=2)
+        self.canvas1.create_line(center[0] + size_X_Y, center[1] - size_X_Y, center[0], center[1], width=2)
+        self.canvas1.create_line(center[0], center[1], center[0], center[1] + size_X_Y, width=2)
 
         # create F(x)
         for i in range(100000):
-            x = float(i / 1000)
+            x = float(i / 100000)
             y = float(pow(x,self.P))
             if y <= 1:
                 self.canvas1.create_oval(self.init_point[0] + x * self.scale, self.init_point[1] + y * self.scale, self.init_point[0] + x * self.scale, self.init_point[1] + y * self.scale, width=2,outline='blue')
@@ -66,9 +69,9 @@ class Application(tk.Frame):
                 self.canvas1.create_oval(self.init_point[0] + x * self.scale, self.init_point[1] + y * self.scale, self.init_point[0] + x * self.scale, self.init_point[1] + y * self.scale, width=1,outline='black')
         
 
-        self.area = 1 * self.counter / self.N
-        self.label3 = tk.Label(self.canvas1, text="面積大約為： " + str(self.area),background='green')
-        self.label3.place(x = 5, y = 5)
+        self.area = 1.0 * float(self.counter / self.N)
+        self.label3 = tk.Label(self.canvas1, text="面積大約為： " + str(self.area),background='ghostwhite')
+        self.label3.place(x = 5, y = 27)
         self.counter = 0
             
 
@@ -84,7 +87,16 @@ class Application(tk.Frame):
             temp = '2'
         self.P = int(temp)
 
-        self.canvas1.delete('all') 
+        self.canvas1.delete('all')
+
+        # 畫正確值
+        x = symbols('x')
+        a = integrate(x**self.P, (x, 0, 1))
+        # print(float(a))
+        label_true_answer = tk.Label(self.canvas1, text = "面積正確值： " + str(float(a)),background='ghostwhite')
+        label_true_answer.place(x=5, y = 5)
+
+
         self.draw_F()
 
 root = tk.Tk(className="MMM")

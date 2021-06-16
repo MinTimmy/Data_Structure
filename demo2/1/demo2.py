@@ -56,9 +56,11 @@ class Application(tk.Frame):
 
         self.label_answer2_text.set("矩陣相乘次數最小值：" + str(self.cost[0][self.N - 1]) + " 次")
         
-        # self.printTable()
+        self.printTable()
        
     def printTable(self):
+        self.master = tk.Tk(className="Dijkstra’s Algorithm - ")
+        self.master.geometry("600x400")
         self.table_square = 100
         self.table_size = (self.N +1) * self.table_square
         string = ""
