@@ -47,7 +47,7 @@ class Application(tk.Frame):
         for i in range(self.N-1):
             self.visited_and_distance.append([0, self.MAX])
             self.previous_node.append(0)
-            self.pass_by.append(0)
+            # self.pass_by.append(0)
 
         for vertex in range(self.N):
         # Finding the next vertex to be visited.
@@ -169,8 +169,8 @@ class Application(tk.Frame):
         temp = []
         n = ""
         i2 += ','
+
         for i in i2:
-            # print(i)
             if ord(i) >= 65 and ord(i) <= 90:
                 same = False
                 for j in range(len(self.items)):
@@ -179,17 +179,18 @@ class Application(tk.Frame):
                 if not same:
                     self.items.append(i)
                     self.items = [self.items[0]] + sorted(self.items[1:])
-                for j in range(len(self.items)):
-                    if first:
-                        if i == self.items[j]:
-                            temp.append([j,-1,-1])
-                            first = False
-                            break
-                    else:
-                        if i == self.items[j]:
-                            temp[len(temp)-1][1] = j
-                            first = True
-                            break
+        for i in i2:
+            for j in range(len(self.items)):
+                if first:
+                    if i == self.items[j]:
+                        temp.append([j,-1,-1])
+                        first = False
+                        break
+                else:
+                    if i == self.items[j]:
+                        temp[len(temp)-1][1] = j
+                        first = True
+                        break
             if ord(i) >= 48 and ord(i) <= 57:
                 n += i
             elif i == ',':
